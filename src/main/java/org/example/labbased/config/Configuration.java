@@ -1,5 +1,7 @@
 package org.example.labbased.config;
 import com.google.gson.Gson;
+import org.example.labbased.exceptions.InvalidConfigurationException;
+
 import java.io.*;
 public class Configuration {
     private int totalTickets;
@@ -7,16 +9,29 @@ public class Configuration {
     private int customerRetrievalRate;
     private int maxTicketCapacity;
     public Configuration(int totalTickets, int ticketReleaseRate, int
-            customerRetrievalRate, int maxTicketCapacity) {
+            customerRetrievalRate, int maxTicketCapacity) throws InvalidConfigurationException {
+        validateConfig(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
         this.totalTickets = totalTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
     }
+
+//    Exception handelling
+   public void validateConfig(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) throws InvalidConfigurationException {
+        if (totalTickets <= 0) {throw new InvalidConfigurationException("Total tickets must be greater than zero");}
+        if(ticketReleaseRate<=0){throw new InvalidConfigurationException("Ticket release rate must be greater than zero");}
+        if(customerRetrievalRate<=0){throw new InvalidConfigurationException("Customer retrieval rate must be greater than zero");}
+        if(maxTicketCapacity<=0){throw new InvalidConfigurationException("Max ticket capacity must be greater than zero");}
+
+   }
+
     public int getTotalTickets() { return totalTickets; }
     public int getTicketReleaseRate() { return ticketReleaseRate; }
     public int getCustomerRetrievalRate() { return customerRetrievalRate; }
     public int getMaxTicketCapacity() { return maxTicketCapacity; }
+
+
     public static Configuration loadFromFile(String filePath) throws IOException {
         Gson gson = new Gson();
         try (Reader reader = new FileReader(filePath)) {

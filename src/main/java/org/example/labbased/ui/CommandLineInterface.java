@@ -8,6 +8,7 @@ public class CommandLineInterface {
         Scanner scanner = new Scanner(System.in);
         Logger.log("Starting system configuration...");
         int totalTickets = getInput(scanner, "Enter Total Tickets: ");
+
         int ticketReleaseRate = getInput(scanner, "Enter Ticket Release Rate: ");
         int customerRetrievalRate = getInput(scanner, "Enter Customer Retrieval Rate: ");
         int maxTicketCapacity = getInput(scanner, "Enter Max Ticket Capacity: ");
