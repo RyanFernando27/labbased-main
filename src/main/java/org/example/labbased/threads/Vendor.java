@@ -14,11 +14,12 @@ public class Vendor extends AbstractTicketHandler implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < ticketReleaseRate; i++) {
-            String ticket = "Ticket-" + System.nanoTime();
+            int ticketNum = i+1;
+            String ticket = "Ticket-" + ticketNum;
             ticketPool.addTickets(ticket);
             Logger.log("Vendor added: " + ticket);
             try {
-                Thread.sleep(500);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 Logger.log("Vendor interrupted.");
             }

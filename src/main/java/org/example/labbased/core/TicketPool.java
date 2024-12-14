@@ -23,4 +23,7 @@ public class TicketPool implements TicketOperation {
     public int getTicketCount() {
         return tickets.size();
     }
+    public List<String> getTickets() {
+        return tickets;
+    }
 }

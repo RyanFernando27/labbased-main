@@ -1,5 +1,6 @@
 package org.example.labbased.ui;
 import org.example.labbased.config.Configuration;
+import org.example.labbased.core.PriorityRetrieval;
 import org.example.labbased.core.TicketPool;
 import org.example.labbased.logging.Logger;
 import org.example.labbased.threads.Customer;
@@ -84,7 +85,7 @@ public class JavaFXInterface extends Application {
         ticketPool = new TicketPool();
         // Start threads
         vendorThread = new Thread(new Vendor(ticketPool, config.getTicketReleaseRate()));
-        customerThread = new Thread(new Customer(ticketPool));
+        customerThread = new Thread(new Customer(ticketPool, new PriorityRetrieval()));
         vendorThread.start();
         customerThread.start();
         updateStatus("System Running...");

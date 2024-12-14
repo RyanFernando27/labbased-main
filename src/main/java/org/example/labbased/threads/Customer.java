@@ -1,16 +1,28 @@
 package org.example.labbased.threads;
-import org.example.labbased.core.AbstractTicketHandler;
+import org.example.labbased.core.*;
 import org.example.labbased.logging.Logger;
-import org.example.labbased.core.TicketPool;
 
 public class Customer extends AbstractTicketHandler implements Runnable {
-    public Customer(TicketPool ticketPool) {
+    TicketRetrievalStrategy ticketRetrievalStrategy;
+
+    public Customer(TicketPool ticketPool, TicketRetrievalStrategy ticketRetrievalStrategy) {
         super(ticketPool);
+        this.ticketRetrievalStrategy =ticketRetrievalStrategy;
     }
+
     @Override
     public void run() {
         while (true) {
-            String ticket = ticketPool.removeTicket();
+            String ticket;
+            if(this.ticketRetrievalStrategy instanceof PriorityRetrieval){
+                ticket= ticketRetrievalStrategy.retrievalByPriority(ticketPool);
+            } else if (this.ticketRetrievalStrategy instanceof IDRetrieval) {
+                ticket=ticketRetrievalStrategy.retrievalByID(ticketPool , "Ticket-1");
+            }
+            else{
+                ticket = null;
+                System.out.println("Invalid retrieval strategy.");
+            }
             if (ticket != null) {
                 Logger.log("Customer retrieved: " + ticket);
             } else {
