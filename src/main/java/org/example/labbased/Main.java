@@ -17,6 +17,22 @@ public class Main {
         Thread fastVendor = new Thread(new FastVendor(ticketPool, config.getTicketReleaseRate()));
         Thread slowVendor = new Thread(new SlowVendor(ticketPool, config.getTicketReleaseRate()));
         Thread customer = new Thread(new Customer(ticketPool, new PriorityRetrieval()));
+
+//        seperate Statistics thread
+        Thread statistics = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    ticketPool.ticketStatistics();
+                    try{
+                        Thread.sleep(5000);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        statistics.start();
         fastVendor.start();
         slowVendor.start();
         customer.start();
