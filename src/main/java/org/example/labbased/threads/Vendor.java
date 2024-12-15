@@ -3,8 +3,8 @@ import org.example.labbased.core.AbstractTicketHandler;
 import org.example.labbased.core.TicketPool;
 import org.example.labbased.logging.Logger;
 
-public class Vendor extends AbstractTicketHandler implements Runnable {
-    private final int ticketReleaseRate;
+public abstract class Vendor extends AbstractTicketHandler implements Runnable {
+    protected final int ticketReleaseRate;
 
     public Vendor(TicketPool ticketPool, int ticketReleaseRate) {
         super(ticketPool);
@@ -13,9 +13,9 @@ public class Vendor extends AbstractTicketHandler implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < ticketReleaseRate; i++) {
+        for (int i = 0; i < getActualTicketReleaseRate(); i++) {
             int ticketNum = i+1;
-            String ticket = "Ticket-" + ticketNum;
+            String ticket = "Ticket-" + System.nanoTime();
             ticketPool.addTickets(ticket);
             Logger.log("Vendor added: " + ticket);
             try {
@@ -30,4 +30,6 @@ public class Vendor extends AbstractTicketHandler implements Runnable {
     public void handleTickets() {
         run();
     }
+
+    protected abstract int getActualTicketReleaseRate();
 }
